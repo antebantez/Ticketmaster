@@ -3,10 +3,10 @@ import java.util.Scanner;
 public class MenuClass {
     Scanner myScanner = new Scanner(System.in);
 
-
     int menuChoice;
 
     public void mainMenu() {
+
         Payment payment = new Payment();
         System.out.println("-*--*--*--*--*--*--*--*-");
         System.out.println(" ");
@@ -20,9 +20,9 @@ public class MenuClass {
 
         try {
             menuChoice = myScanner.nextInt();
-
         } catch (Exception e) {
             e.printStackTrace();
+            mainMenu();
         }
 
         switch (menuChoice) {
@@ -55,6 +55,7 @@ public class MenuClass {
         }
 
     }
+
 
 
 }

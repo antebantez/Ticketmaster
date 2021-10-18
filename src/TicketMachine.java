@@ -5,15 +5,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TicketMachine {
-    String line = null;
-    String myDepartureString;
-    String myDestinationString;
-    int childTicketAmount;
-    int adultTicketAmount;
-    int pensionerTicketAmount;
+    static public String myDepartureString;
+    static public String myDestinationString;
+    static public int childTicketAmount;
+    static public int adultTicketAmount;
+    static public int pensionerTicketAmount;
     MenuClass menuClass = new MenuClass();
-
-
+    String line = null;
 
     Scanner myScanner = new Scanner(System.in);
     ArrayList<String> stationList = new ArrayList<>();
@@ -45,25 +43,14 @@ public class TicketMachine {
         System.out.println("Write -Menu- to get to the main menu");
         try {
             setMyDepartureString(myScanner.nextLine());
-            System.out.println(myDepartureString);
         } catch (Exception e) {
             e.printStackTrace();
         }
         for (String stations : stationList) {
-            if (myDepartureString.equalsIgnoreCase(stations)) {
-                try {
-                    for (int i = 0; i < 10; i++) {
-                        Thread.sleep(150);
-                        System.out.print("█   ");
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            if (myDepartureString.equalsIgnoreCase(stations)){
                 System.out.println("\nYou are travelling from " + stations);
                 choseDestination();
-            } //else if (myDepartureString.equalsIgnoreCase("Menu")) {
-//                menuClass.mainMenu();
-//            }
+            }
 
         }
     }
@@ -74,33 +61,32 @@ public class TicketMachine {
             System.out.println(stations);
         }
         System.out.println("\n\nWhich place do you want to travel to?\n");
-        setMyDestinationString(myScanner.nextLine());
-        for (String stations : stationList) {
-            if (myDestinationString.equalsIgnoreCase(stations)) {
-                try {
-                    for (int i = 0; i < 10; i++) {
-                        Thread.sleep(150);
-                        System.out.print("█   ");
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        try{
+            setMyDestinationString(myScanner.nextLine());
 
+        }catch (Exception e){
+            System.out.println("Wrong input, Try again!");
+            choseDestination();
+        }
+        if (myDepartureString.equalsIgnoreCase(myDestinationString)){
+            System.out.println("You cannot travel with train to the same location!\n" + "Try again!\n");
+            choseDestination();
+        }
+        for (String stations : stationList) {
+
+            if (myDestinationString.equalsIgnoreCase(stations)) {
                 System.out.println("\n\nYou chose to travel to " + stations);
                 System.out.println(myDepartureString + "t");
                 ticketAmount();
             }
-//            else if (myDestinationString.equalsIgnoreCase("Menu")){
-//                menuClass.mainMenu();
-//            }
-
         }
 
     }
 
     public void ticketAmount() {
         Payment payment = new Payment();
-        while (true) {
+        boolean isRunning = true;
+        while (isRunning) {
             System.out.println("Child tickets : " + childTicketAmount);
             System.out.println("Adult tickets : " + adultTicketAmount);
             System.out.println("pensioner tickets : " + pensionerTicketAmount);
@@ -113,27 +99,16 @@ public class TicketMachine {
                     Press '0' to continue to payment""");
             System.out.println(myDepartureString + "☺");
             switch (myScanner.nextInt()) {
-                case 1:
-                    childTicketAmount++;
-                    setChildTicketAmount(childTicketAmount);
-                    break;
-                case 2:
-                    adultTicketAmount++;
-                    setAdultTicketAmount(adultTicketAmount);
-                    break;
-                case 3:
-                    pensionerTicketAmount++;
-                    setPensionerTicketAmount(pensionerTicketAmount);
-                    break;
-                case 0:
+                case 1 -> childTicketAmount++;
+                case 2 -> adultTicketAmount++;
+                case 3 -> pensionerTicketAmount++;
+                case 0 -> {
+                    isRunning = false;
                     payment.payForTickets();
-                    break;
-                default:
-                    System.err.println("Please enter a valid option!");
-                    break;
+                }
+                default -> System.err.println("Please enter a valid option!");
             }
         }
-
     }
 
 
@@ -154,27 +129,26 @@ public class TicketMachine {
     }
 
     public String getMyDepartureString() {
-        System.out.println(myDepartureString);
-        return myDepartureString;
+        return this.myDepartureString;
     }
 
     public String getMyDestinationString() {
-        return myDestinationString;
+        return this.myDestinationString;
     }
 
     public int getChildTicketAmount() {
-        return childTicketAmount;
+        return this.childTicketAmount;
     }
 
     public int getAdultTicketAmount() {
-        return adultTicketAmount;
+        return this.adultTicketAmount;
     }
 
     public int getPensionerTicketAmount() {
-        return pensionerTicketAmount;
+        return this.pensionerTicketAmount;
     }
 
-    public void setMyDepartureString(String myDepartureString) {
+   public void setMyDepartureString(String myDepartureString) {
         this.myDepartureString = myDepartureString;
     }
 
@@ -182,7 +156,7 @@ public class TicketMachine {
         this.myDestinationString = myDestinationString;
     }
 
-    public void setChildTicketAmount(int childTicketAmount) {
+   /* public void setChildTicketAmount(int childTicketAmount) {
         this.childTicketAmount = childTicketAmount;
     }
 
@@ -192,5 +166,5 @@ public class TicketMachine {
 
     public void setPensionerTicketAmount(int pensionerTicketAmount) {
         this.pensionerTicketAmount = pensionerTicketAmount;
-    }
+    }*/
 }

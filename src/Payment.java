@@ -19,7 +19,8 @@ public class Payment {
 
 
     public void payForTickets() {
-        System.out.println(ticketMachine.myDepartureString + "☺☺");
+
+        System.out.println(ticketMachine.getMyDepartureString());
 
         totalTickets = ticketMachine.getChildTicketAmount() + ticketMachine.getAdultTicketAmount() + ticketMachine.getPensionerTicketAmount();
 
@@ -27,12 +28,8 @@ public class Payment {
                 (ticketMachine.getPensionerTicketAmount() * pensionerPrice);
 
 
-
-
-        String depString = ticketMachine.myDepartureString;
-        String desString = ticketMachine.myDestinationString;
-        if (depString.equals("Köpenhamn C") ||
-                desString.equals("Köpenhamn C")) {
+        if (ticketMachine.getMyDepartureString().equalsIgnoreCase("Köpenhamn C") ||
+                ticketMachine.getMyDestinationString().equalsIgnoreCase("Köpenhamn C")) {
             sumToPay += (5 * totalTickets);
         }
         System.out.println("Amount to pay : " + (sumToPay - money));
@@ -43,6 +40,7 @@ public class Payment {
             System.out.println("You get " + (money - sumToPay) + " in return!");
             System.out.println("Printing ticket...");
             makeTicket();
+
         } else {
             System.out.println("You cant afford the tickets, please insert another " +
                     (sumToPay - money) + " Kr");
@@ -68,7 +66,7 @@ public class Payment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        printTicket();
         menu.mainMenu();
     }
 
@@ -83,6 +81,7 @@ public class Payment {
             e.printStackTrace();
         }
     }
+
 
 
 }
