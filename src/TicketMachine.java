@@ -5,16 +5,21 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TicketMachine {
-    static public String myDepartureString;
-    static public String myDestinationString;
-    static public int childTicketAmount;
-    static public int adultTicketAmount;
-    static public int pensionerTicketAmount;
-    MenuClass menuClass = new MenuClass();
+    String myDepartureString;
+    String myDestinationString;
+    int childTicketAmount;
+    int adultTicketAmount;
+    int pensionerTicketAmount;
+
+
+
+
     String line = null;
 
     Scanner myScanner = new Scanner(System.in);
     ArrayList<String> stationList = new ArrayList<>();
+
+
 
     public void printDepartureOptions() {
         childTicketAmount = 0;
@@ -34,7 +39,6 @@ public class TicketMachine {
             e.printStackTrace();
         }
 
-
         choseDeparture();
     }
 
@@ -42,12 +46,12 @@ public class TicketMachine {
         System.out.println("\nWhere do you want to travel from?");
         System.out.println("Write -Menu- to get to the main menu");
         try {
-            setMyDepartureString(myScanner.nextLine());
+            myDepartureString = myScanner.nextLine();
         } catch (Exception e) {
             e.printStackTrace();
         }
         for (String stations : stationList) {
-            if (myDepartureString.equalsIgnoreCase(stations)){
+            if (myDepartureString.equalsIgnoreCase(stations)) {
                 System.out.println("\nYou are travelling from " + stations);
                 choseDestination();
             }
@@ -61,15 +65,15 @@ public class TicketMachine {
             System.out.println(stations);
         }
         System.out.println("\n\nWhich place do you want to travel to?\n");
-        try{
-            setMyDestinationString(myScanner.nextLine());
+        try {
+            myDestinationString = myScanner.nextLine();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Wrong input, Try again!");
             choseDestination();
         }
-        if (myDepartureString.equalsIgnoreCase(myDestinationString)){
-            System.out.println("You cannot travel with train to the same location!\n" + "Try again!\n");
+        if (myDepartureString.equalsIgnoreCase(myDestinationString)) {
+            System.out.println("You cannot travel with train to the same location!" + "\nTry again!");
             choseDestination();
         }
         for (String stations : stationList) {
@@ -97,14 +101,14 @@ public class TicketMachine {
                     '2' for adult ticket
                     '3' for pensioner ticket
                     Press '0' to continue to payment""");
-            System.out.println(myDepartureString + "☺");
             switch (myScanner.nextInt()) {
                 case 1 -> childTicketAmount++;
                 case 2 -> adultTicketAmount++;
                 case 3 -> pensionerTicketAmount++;
                 case 0 -> {
                     isRunning = false;
-                    payment.payForTickets();
+                    payment.payForTickets(myDepartureString,myDestinationString,
+                            childTicketAmount,adultTicketAmount,pensionerTicketAmount);
                 }
                 default -> System.err.println("Please enter a valid option!");
             }
@@ -113,6 +117,7 @@ public class TicketMachine {
 
 
     public void travelRoutes() {
+        MenuClass menuClass = new MenuClass();
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("avgangar.txt"));
             while ((line = bufferedReader.readLine()) != null) {
@@ -125,46 +130,5 @@ public class TicketMachine {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
-    public String getMyDepartureString() {
-        return this.myDepartureString;
-    }
-
-    public String getMyDestinationString() {
-        return this.myDestinationString;
-    }
-
-    public int getChildTicketAmount() {
-        return this.childTicketAmount;
-    }
-
-    public int getAdultTicketAmount() {
-        return this.adultTicketAmount;
-    }
-
-    public int getPensionerTicketAmount() {
-        return this.pensionerTicketAmount;
-    }
-
-   public void setMyDepartureString(String myDepartureString) {
-        this.myDepartureString = myDepartureString;
-    }
-
-    public void setMyDestinationString(String myDestinationString) {
-        this.myDestinationString = myDestinationString;
-    }
-
-   /* public void setChildTicketAmount(int childTicketAmount) {
-        this.childTicketAmount = childTicketAmount;
-    }
-
-    public void setAdultTicketAmount(int adultTicketAmount) {
-        this.adultTicketAmount = adultTicketAmount;
-    }
-
-    public void setPensionerTicketAmount(int pensionerTicketAmount) {
-        this.pensionerTicketAmount = pensionerTicketAmount;
-    }*/
 }

@@ -5,61 +5,57 @@ import java.util.Scanner;
 
 public class Payment {
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-    Scanner myScanner = new Scanner(System.in);
-    TicketMachine ticketMachine = new TicketMachine();
     MenuClass menu = new MenuClass();
 
     int money = 0;
     int kidPrice = 45;
     int pensionerPrice = 50;
     int adultPrice = 60;
-
     int totalTickets = 0;
     int sumToPay = 0;
+    public void payForTickets(String myDep, String myDes, int childT, int adultT, int pensT) {
+        totalTickets = childT + adultT + pensT;
+
+        sumToPay = (childT * kidPrice) + (adultT * adultPrice) +
+                (pensT * pensionerPrice);
 
 
-    public void payForTickets() {
-
-        System.out.println(ticketMachine.getMyDepartureString());
-
-        totalTickets = ticketMachine.getChildTicketAmount() + ticketMachine.getAdultTicketAmount() + ticketMachine.getPensionerTicketAmount();
-
-        sumToPay = (ticketMachine.getChildTicketAmount() * kidPrice) + (ticketMachine.getAdultTicketAmount() * adultPrice) +
-                (ticketMachine.getPensionerTicketAmount() * pensionerPrice);
-
-
-        if (ticketMachine.getMyDepartureString().equalsIgnoreCase("Köpenhamn C") ||
-                ticketMachine.getMyDestinationString().equalsIgnoreCase("Köpenhamn C")) {
+        if (myDep.equalsIgnoreCase("Köpenhamn C") ||
+                myDes.equalsIgnoreCase("Köpenhamn C")) {
             sumToPay += (5 * totalTickets);
         }
         System.out.println("Amount to pay : " + (sumToPay - money));
         System.out.println("Please insert money into the machine");
+        Scanner myScanner = new Scanner(System.in);
         money += myScanner.nextInt();
         if (money >= sumToPay) {
             System.out.println("Payment succeeded!");
             System.out.println("You get " + (money - sumToPay) + " in return!");
             System.out.println("Printing ticket...");
-            makeTicket();
+            makeTicket(myDep, myDes, childT, adultT,pensT);
 
         } else {
             System.out.println("You cant afford the tickets, please insert another " +
                     (sumToPay - money) + " Kr");
-            payForTickets();
+            payForTickets(myDep, myDes, childT, adultT,pensT);
         }
     }
 
 
-    public void makeTicket() {
+    public void makeTicket(String myDep, String myDes, int childT, int adultT, int pensT) {
+
+
         LocalDateTime now = LocalDateTime.now();
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("ticket.txt"));
             bufferedWriter.write("                         Ticket\n" +
                     "----------------------------------------------------------" +
-                    "\nTime of purchase : " + dtf.format(now) +
-                    "\nTotal tickets bought : " + totalTickets +
-                    "\nChild-Tickets : " + ticketMachine.getChildTicketAmount() +
-                    "\nAdult-Tickets : " + ticketMachine.getAdultTicketAmount() +
-                    "\nPensioner-Tickets : " + ticketMachine.getPensionerTicketAmount() +
+                    "\nTime of transaction : " + dtf.format(now) +
+                    "\n" + myDep.toUpperCase()+ " --> " + myDes.toUpperCase() +
+                    "\nTotal Ticket Amount : " + totalTickets +
+                    "\nChild-Tickets : " + childT +
+                    "\nAdult-Tickets : " + adultT +
+                    "\nPensioner-Tickets : " + pensT +
                     "\nTotal price: " + sumToPay + " Kr" +
                     "\n----------------------------------------------------------");
             bufferedWriter.close();
@@ -81,6 +77,7 @@ public class Payment {
             e.printStackTrace();
         }
     }
+
 
 
 

@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class MenuClass {
     Scanner myScanner = new Scanner(System.in);
-
+    TicketMachine ticketMachine = new TicketMachine();
     int menuChoice;
 
     public void mainMenu() {
@@ -27,10 +27,10 @@ public class MenuClass {
 
         switch (menuChoice) {
             case 1:
-                payment.ticketMachine.printDepartureOptions();
+                ticketMachine.printDepartureOptions();
                 break;
             case 2:
-                payment.ticketMachine.travelRoutes();
+                ticketMachine.travelRoutes();
 
                 break;
 
@@ -42,6 +42,7 @@ public class MenuClass {
                 System.out.println("Child-Ticket : " + payment.kidPrice);
                 System.out.println("Adult-Ticket : " + payment.adultPrice);
                 System.out.println("Pensioner-Price : " + payment.pensionerPrice);
+                System.out.println("FYI, a trip to/from Köpenhamn C will cost 5 kr extra per ticket!!!");
                 mainMenu();
                 break;
             case 5 :
